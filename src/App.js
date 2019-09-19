@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Input, Icon, Button } from 'semantic-ui-react';
+import { Input, Icon, Button, Card, Image } from 'semantic-ui-react';
 import * as _ from 'lodash';
 
 const url = 'http://970c4ea3.ngrok.io/image-search';
@@ -11,7 +11,7 @@ function imageSearch(image) {
       {
         "SKU": "SOFSCT046BLU-ME",
         "description": "Charley Accent Chair, Midnight Grey Velvet",
-        "image_url": "http://www.made.com/image.jpg",
+        "image_url": "https://res.cloudinary.com/made-com/image/upload/c_pad,d_made.svg,f_auto,w_200,dpr_2.0,q_auto:best/v4/catalog/product/catalog/3/9/5/e/395e6f14eb2ffa641e0e384a7d358385abc11c47_CHALLE012ORA_UK_2x_Lule_High_back_Dining_Chairs_Flame_Orange_Velvet_PL.jpg",
         "price": "179.00",
         "style": "sexy",
         "type": "seating",
@@ -20,7 +20,7 @@ function imageSearch(image) {
       {
         "SKU": "TABSCT046RED-ME",
         "description": "Bloody solid oak table",
-        "image_url": "http://www.made.com/image2.jpg",
+        "image_url": "https://res.cloudinary.com/made-com/image/upload/c_pad,d_made.svg,f_auto,w_265,dpr_2.0,q_auto:best/v4/catalog/product/catalog/4/0/a/b/40ab423836fd6d8b9bcc1bd6867e7b5839cb11d7_TBLBOO001BLA_UK_Boone_8_Seat_Dining_Table_Concrete_Resin_Top_Black_PL.jpg",
         "price": "173.00",
         "style": "hard",
         "type": "table",
@@ -74,6 +74,34 @@ function Tags(props) {
   )
 }
 
+function Product(props) {
+  return (
+    <Card className='product'>
+      <Image src={props.data.image_url} wrapped ui={false} />
+      <Card.Content>
+        <Card.Description>
+          Daniel is a comedian living in Nashville.
+        </Card.Description>
+      </Card.Content>
+      <Card.Content>
+        <strong>£123</strong>
+      </Card.Content>
+    </Card>
+  )
+}
+
+function ProductResults(props) {
+  return (
+    <div className='product-results'>
+      {props.products.map((value, index) => {
+          return (
+            <Product key={index} data={value} />
+          )
+        })}
+    </div>
+  )
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -119,7 +147,7 @@ class App extends React.Component {
         <ImagePreview url={this.state.file}/>
         <hr />
         <Tags labels={tags} />
-        
+        <ProductResults products={data.matches}/>
       </div>
     );
   }
