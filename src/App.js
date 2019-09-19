@@ -15,16 +15,16 @@ function imageSearch(image) {
         "price": "179.00",
         "style": "sexy",
         "type": "seating",
-        "score": 0.987
+        "score": 0.90
       },
       {
         "SKU": "TABSCT046RED-ME",
         "description": "Bloody solid oak table",
         "image_url": "https://res.cloudinary.com/made-com/image/upload/c_pad,d_made.svg,f_auto,w_265,dpr_2.0,q_auto:best/v4/catalog/product/catalog/4/0/a/b/40ab423836fd6d8b9bcc1bd6867e7b5839cb11d7_TBLBOO001BLA_UK_Boone_8_Seat_Dining_Table_Concrete_Resin_Top_Black_PL.jpg",
-        "price": "173.00",
+        "price": "83.00",
         "style": "hard",
         "type": "table",
-        "score": 0.987
+        "score": 0.95
       }
     ],
     "hotspots": [
@@ -63,37 +63,39 @@ function ImagePreview(props) {
 function Tags(props) {
   return (
     <div className="tags">
-        {props.labels.map((value, index) => {
-          return (
-            <Button key={index} size='large'>
-              {value}
-            </Button>
-          )
-        })}
+      {props.labels.map((value, index) => {
+        return (
+          <Button key={index} size='large'>
+            {value}
+          </Button>
+        )
+      })}
       </div>
   )
 }
 
 function Product(props) {
+  const data = props.data;
   return (
     <Card className='product'>
-      <Image src={props.data.image_url} wrapped ui={false} />
+      <Image src={data.image_url} wrapped ui={false} />
       <Card.Content>
         <Card.Description>
-          Daniel is a comedian living in Nashville.
+          {data.description}
         </Card.Description>
       </Card.Content>
       <Card.Content>
-        <strong>£123</strong>
+        <strong>£{data.price}</strong>
       </Card.Content>
     </Card>
   )
 }
 
 function ProductResults(props) {
+  const products = _.orderBy(props.products, ['score'], ['desc'])
   return (
     <div className='product-results'>
-      {props.products.map((value, index) => {
+      {products.map((value, index) => {
           return (
             <Product key={index} data={value} />
           )
