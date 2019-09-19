@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.search-bar {
+  width: 100%;
+  padding-right: 40px;
+}
+#image-input {
+  display: none;
+}
+label[for='image-input'] {
+  color: white;
+}
