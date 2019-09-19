@@ -60,11 +60,17 @@ function ImagePreview(props) {
   )
 }
 
-function Tag(props) {
+function Tags(props) {
   return (
-    <Button size='large'>
-      {props.name}
-    </Button>
+    <div className="tags">
+        {props.labels.map((value, index) => {
+          return (
+            <Button key={index} size='large'>
+              {value}
+            </Button>
+          )
+        })}
+      </div>
   )
 }
 
@@ -111,14 +117,9 @@ class App extends React.Component {
         </header>
 
         <ImagePreview url={this.state.file}/>
-
         <hr />
-
-        <div className="tags">
-          {tags.map((value, index) => {
-            return <Tag key={index} name={value} />
-          })}
-        </div>
+        <Tags labels={tags} />
+        
       </div>
     );
   }
