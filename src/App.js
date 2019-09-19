@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Input, Icon } from 'semantic-ui-react';
+import { Input, Icon, Button } from 'semantic-ui-react';
 
 const url = 'http://970c4ea3.ngrok.io/image-search';
 
@@ -59,10 +59,18 @@ function ImagePreview(props) {
   )
 }
 
+function Tag(props) {
+  return (
+    <Button size='large'>
+      {props.name}
+    </Button>
+  )
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {file: null};
+    this.state = {file: 'https://z2photorankmedia-a.akamaihd.net/media/f/3/a/f3aynk4/original.jpg'};
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -73,6 +81,9 @@ class App extends React.Component {
   }
 
   render() {
+    const data = imageSearch();
+    const tags = data.tags.map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
+
     return (
       <div className="App">
         <header>
@@ -96,7 +107,16 @@ class App extends React.Component {
             value={this.state.image_url}
             onChange={this.handleChange}/>
         </header>
+
         <ImagePreview url={this.state.file}/>
+
+        <hr />
+
+        <div className="tags">
+          {tags.map((value, index) => {
+            return <Tag key={index} name={value} />
+          })}
+        </div>
       </div>
     );
   }

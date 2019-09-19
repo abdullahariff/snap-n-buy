@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.ui.large.button {
+  border-radius: 999px;
+}
+
 .search-bar {
   width: 100%;
 }
@@ -22,5 +26,21 @@ label[for='image-input'] {
   color: white;
 }
 #image-output {
-  width: 100%;
+  max-width: 100%;
+  padding: 30px;
+  border-radius: 40px;
+}
+
+.tags {
+  margin-left: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.tags::-webkit-scrollbar {
+  display: none;
+}
+.tags > button {
+  display: inline-block;
+  margin: 0 10px !important;
 }
