@@ -133,7 +133,7 @@ function ProductResults(props) {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {file: 'https://z2photorankmedia-a.akamaihd.net/media/f/3/a/f3aynk4/original.jpg'};
+    this.state = {file: null};
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -148,7 +148,10 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <Mast />
+        {!this.state.file &&
+          <Mast />
+        }
+        
         <header>
           <Input 
             action={
@@ -171,8 +174,11 @@ class App extends React.Component {
             onChange={this.handleChange}/>
         </header>
 
-        <Home />
-        {/* <Result data={data} image_url={this.state.file}/> */}
+        {!this.state.file ? (
+          <Home />
+        ) : (
+          <Result data={data} image_url={this.state.file}/>
+        )}
       </div>
     );
   }
