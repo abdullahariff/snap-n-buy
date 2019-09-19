@@ -2,53 +2,8 @@ import React from 'react';
 import './App.css';
 import { Input, Icon, Button, Card, Image } from 'semantic-ui-react';
 import * as _ from 'lodash';
+import searchImage from './service'
 
-const url = 'http://970c4ea3.ngrok.io/image-search';
-
-function imageSearch(image) {
-  return {
-    "matches": [
-      {
-        "SKU": "SOFSCT046BLU-ME",
-        "description": "Charley Accent Chair, Midnight Grey Velvet",
-        "image_url": "https://res.cloudinary.com/made-com/image/upload/c_pad,d_made.svg,f_auto,w_200,dpr_2.0,q_auto:best/v4/catalog/product/catalog/3/9/5/e/395e6f14eb2ffa641e0e384a7d358385abc11c47_CHALLE012ORA_UK_2x_Lule_High_back_Dining_Chairs_Flame_Orange_Velvet_PL.jpg",
-        "price": "179.00",
-        "style": "sexy",
-        "type": "seating",
-        "score": 0.90
-      },
-      {
-        "SKU": "TABSCT046RED-ME",
-        "description": "Bloody solid oak table",
-        "image_url": "https://res.cloudinary.com/made-com/image/upload/c_pad,d_made.svg,f_auto,w_265,dpr_2.0,q_auto:best/v4/catalog/product/catalog/4/0/a/b/40ab423836fd6d8b9bcc1bd6867e7b5839cb11d7_TBLBOO001BLA_UK_Boone_8_Seat_Dining_Table_Concrete_Resin_Top_Black_PL.jpg",
-        "price": "83.00",
-        "style": "hard",
-        "type": "table",
-        "score": 0.95
-      }
-    ],
-    "hotspots": [
-      {
-        "product_type": "seating",
-        "coords": [100, 150],
-      },
-      {
-        "product_type": "table",
-        "coords": [260, 355],
-      }
-    ],
-    "tags": [
-      {
-        "name": "armchairs",
-        "score": 0.75
-      },
-      {
-        "name": "chairs",
-        "score": 0.90
-      },
-    ]
-  }
-}
 
 function Mast () {
   return (
@@ -87,15 +42,22 @@ function Tags(props) {
 }
 
 function Result(props) {
-  const tags = _.orderBy(props.data.tags, ['score'], ['desc'])
-    .map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
+  let tags = null;
+  if (props.data && props.data.hasOwnProperty('tags')) {
+    tags = _.orderBy(props.data.tags, ['score'], ['desc'])
+      .map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
+  }
 
   return (
     <div>
       <ImagePreview url={props.image_url}/>
       <hr />
-      <Tags labels={tags} />
-      <ProductResults products={props.data.matches}/>
+      {tags &&
+        <Tags labels={tags} />
+      }
+      {props.data && props.data.hasOwnProperty('matches') &&
+        <ProductResults products={props.data.matches}/>
+      }
     </div>
   )
 }
@@ -139,12 +101,16 @@ class App extends React.Component {
   }
 
   handleChange(e) {
-    const url = URL.createObjectURL(e.target.files[0]);
-    this.setState({file: url})
+    const file = URL.createObjectURL(e.target.files[0]);
+    this.setState({...this.state, file: file})
+    searchImage(file)
+      .then(result => {
+        this.setState({...this.state, data: result});
+      })
   }
 
   render() {
-    const data = imageSearch();
+    const data = this.state.data;
 
     return (
       <div className="App">
@@ -169,6 +135,7 @@ class App extends React.Component {
 
           <input
             type='file'
+            name='photo'
             accept='image/*'
             capture='user'
             id='image-input'
