@@ -151,19 +151,21 @@ class App extends React.Component {
         {!this.state.file &&
           <Mast />
         }
-        
+
         <header>
-          <Input 
-            action={
-              <label for='image-input'>
-                <Icon name='photo' bordered inverted color='black' size='large' />
-              </label>
-            }
-            icon='search'
-            placeholder='Search...'
-            iconPosition='left'
-            className='search-bar'
-          />
+          <div className='search-bar-wrapper'>
+            <Input 
+              action={
+                <label for='image-input'>
+                  <Icon name='photo' bordered inverted color='black' size='large' />
+                </label>
+              }
+              icon='search'
+              placeholder='Search...'
+              iconPosition='left'
+              className='search-bar'
+            />
+          </div>
 
           <input
             type='file'

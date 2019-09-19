@@ -20,14 +20,28 @@ code {
   width: 100%;
 }
 
+.search-bar-wrapper {
+  width: 100%;
+  padding: 15px;
+}
 .search-bar {
   width: 100%;
+}
+.search-bar input {
+  background-color: #f8f8f8 !important;
+  border: solid 1px #eeeeee !important;
+  border-radius: 8px !important;
+}
+.search-bar img {
+  width: 24px;
+  padding: 3px;
 }
 #image-input {
   display: none;
 }
 label[for='image-input'] {
   color: white;
+
 }
 #image-output {
   max-width: 100%;
