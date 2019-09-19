@@ -50,6 +50,18 @@ function imageSearch(image) {
   }
 }
 
+function Mast () {
+  return (
+    <img src='assets/mast.png' alt='Mast' className='mast'/>
+  )
+}
+
+function Home () {
+  return (
+    <img src='assets/home.png' alt='Home' className='home'/>
+  )
+}
+
 function ImagePreview(props) {
   return (
     <img 
@@ -71,6 +83,20 @@ function Tags(props) {
         )
       })}
       </div>
+  )
+}
+
+function Result(props) {
+  const tags = _.orderBy(props.data.tags, ['score'], ['desc'])
+    .map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
+
+  return (
+    <div>
+      <ImagePreview url={props.image_url}/>
+      <hr />
+      <Tags labels={tags} />
+      <ProductResults products={props.data.matches}/>
+    </div>
   )
 }
 
@@ -119,11 +145,10 @@ class App extends React.Component {
 
   render() {
     const data = imageSearch();
-    const tags = _.orderBy(data.tags, ['score'], ['desc'])
-      .map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
 
     return (
       <div className="App">
+        <Mast />
         <header>
           <Input 
             action={
@@ -146,10 +171,8 @@ class App extends React.Component {
             onChange={this.handleChange}/>
         </header>
 
-        <ImagePreview url={this.state.file}/>
-        <hr />
-        <Tags labels={tags} />
-        <ProductResults products={data.matches}/>
+        <Home />
+        {/* <Result data={data} image_url={this.state.file}/> */}
       </div>
     );
   }

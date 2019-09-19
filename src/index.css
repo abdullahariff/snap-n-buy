@@ -16,6 +16,10 @@ code {
   border-radius: 999px;
 }
 
+.mast, .home {
+  width: 100%;
+}
+
 .search-bar {
   width: 100%;
 }
