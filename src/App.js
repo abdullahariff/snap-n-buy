@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Input, Icon, Button } from 'semantic-ui-react';
+import * as _ from 'lodash';
 
 const url = 'http://970c4ea3.ngrok.io/image-search';
 
@@ -38,12 +39,12 @@ function imageSearch(image) {
     ],
     "tags": [
       {
-        "name": "chairs",
-        "score": 0.90
-      },
-      {
         "name": "armchairs",
         "score": 0.75
+      },
+      {
+        "name": "chairs",
+        "score": 0.90
       },
     ]
   }
@@ -82,7 +83,8 @@ class App extends React.Component {
 
   render() {
     const data = imageSearch();
-    const tags = data.tags.map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
+    const tags = _.orderBy(data.tags, ['score'], ['desc'])
+      .map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
 
     return (
       <div className="App">
