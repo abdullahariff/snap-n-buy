@@ -1,16 +1,12 @@
 import React from "react";
 import "./App.css";
-import { Input, Icon, Button, Card, Image } from "semantic-ui-react";
+import { Input, Icon, Button, Card, Image, Modal } from "semantic-ui-react";
 import _ from "lodash";
 import $ from "jquery";
 import searchImage from "./service";
 
 function Mast() {
   return <img src="assets/mast.png" alt="Mast" className="mast" />;
-}
-
-function Home() {
-  return <img src="assets/home.png" alt="Home" className="home" />;
 }
 
 function ImagePreview(props) {
@@ -43,6 +39,25 @@ function Hotspot(props) {
         top: `${topPercent}%`
       }}
     />
+  );
+}
+
+function Home(props) {
+  return (
+    <>
+      <Modal open={props.modalOpen}>
+        <Modal.Content image>
+          <label for="image-input">
+            <img
+              src="/assets/modal-content.png"
+              alt="modal popup"
+              width="100%"
+            />
+          </label>
+        </Modal.Content>
+      </Modal>
+      <img src="assets/home.png" alt="Home" className="home" />
+    </>
   );
 }
 
@@ -89,6 +104,15 @@ function Product(props) {
   const data = props.data;
   return (
     <Card className="product">
+      <img
+        src="assets/love.svg"
+        style={{
+          position: "absolute",
+          right: 0,
+          padding: "3px",
+          width: "24px"
+        }}
+      />
       <Image src={data.image_url} wrapped ui={false} />
       <Card.Content>
         <Card.Description>{data.description}</Card.Description>
@@ -114,7 +138,7 @@ function ProductResults(props) {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { file: null };
+    this.state = { file: null, modalOpen: false };
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -122,10 +146,14 @@ class App extends React.Component {
   handleChange(e) {
     const el = $("#image-input");
     const file = URL.createObjectURL(e.target.files[0]);
-    this.setState({ ...this.state, file: file });
+    this.setState({ ...this.state, file: file, modalOpen: false });
     searchImage(el[0]).then(result => {
       this.setState({ ...this.state, data: result });
     });
+  }
+
+  toggleModal() {
+    this.setState({ modalOpen: !this.state.modalOpen });
   }
 
   render() {
@@ -138,16 +166,18 @@ class App extends React.Component {
         <header>
           <div className="search-bar-wrapper">
             <Input
+              onClick={() => this.setState({ modalOpen: true })}
               action={
-                <label for="image-input">
-                  <Icon
-                    name="photo"
-                    bordered
-                    inverted
-                    color="black"
-                    size="large"
-                  />
-                </label>
+                <img
+                  onClick={this.toggleModal.bind(this)}
+                  name="photo"
+                  bordered
+                  inverted
+                  color="black"
+                  size="large"
+                  src="assets/camera.svg"
+                  alt="camera icon"
+                />
               }
               icon="search"
               placeholder="Search..."
@@ -168,7 +198,7 @@ class App extends React.Component {
         </header>
 
         {!this.state.file ? (
-          <Home />
+          <Home {...this.toggleModal} modalOpen={this.state.modalOpen} />
         ) : (
           <Result data={data} image_url={this.state.file} />
         )}

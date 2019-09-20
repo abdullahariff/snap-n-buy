@@ -16,7 +16,8 @@ code {
   border-radius: 999px;
 }
 
-.mast, .home {
+.mast,
+.home {
   width: 100%;
 }
 
@@ -33,15 +34,22 @@ code {
   border-radius: 8px !important;
 }
 .search-bar img {
-  width: 24px;
+  width: 32px;
   padding: 3px;
+}
+
+/* for MAdaol background */
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+.ui.modal {
+  border-radius: 10px !important;
 }
 #image-input {
   display: none;
 }
-label[for='image-input'] {
+label[for="image-input"] {
   color: white;
-
 }
 #image-output {
   max-width: 100%;
@@ -86,13 +94,15 @@ label[for='image-input'] {
   max-width: 80%;
   box-shadow: none;
 }
-.ui.card>.content, .ui.cards>.card>.content {
+.ui.card > .content,
+.ui.cards > .card > .content {
   text-align: left;
   border: none;
   padding: 0;
   margin-top: 10px;
 }
 
-.ui.card>.image, .ui.cards>.card>.image {
+.ui.card > .image,
+.ui.cards > .card > .image {
   background: none;
 }
