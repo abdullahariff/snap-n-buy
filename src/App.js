@@ -20,10 +20,34 @@ function Home () {
 
 function ImagePreview(props) {
   return (
-    <img 
-      src={props.url}
-      alt="The capture will appear in this box."
-      id='image-output'
+    <div className='image-output-wrapper'>
+      <img 
+        src={props.url}
+        alt="The capture will appear in this box."
+        id='image-output'
+      />
+      {props.hotspots && props.hotspots.map((value, index) => {
+        return (
+          <Hotspot key={index} coords={value.coords}/>
+        )
+      })}
+    </div>
+  )
+}
+
+function Hotspot(props) {
+  const img = document.getElementById('image-output');
+  const imageWidth = img.naturalWidth;
+  const imageHeight = img.naturalHeight;
+  const leftPercent = (props.coords[0] / imageWidth) * 100;
+  const topPercent = (props.coords[1] / imageHeight) * 100;
+  return (
+    <div
+      className='hotspot'
+      style={{
+        left: `${leftPercent}%`,
+        top: `${topPercent}%`,
+      }}
     />
   )
 }
@@ -43,15 +67,20 @@ function Tags(props) {
 }
 
 function Result(props) {
-  let tags = null;
+  let tags;
+  let hotspots;
+
   if (props.data && props.data.hasOwnProperty('tags')) {
     tags = _.orderBy(props.data.tags, ['score'], ['desc'])
       .map(t => t.name.charAt(0).toUpperCase() + t.name.slice(1));
   }
+  if (props.data && props.data.hasOwnProperty('hotspots')) {
+    hotspots = props.data.hotspots;
+  }
 
   return (
     <div>
-      <ImagePreview url={props.image_url}/>
+      <ImagePreview url={props.image_url} hotspots={hotspots}/>
       <hr />
       {tags &&
         <Tags labels={tags} />
@@ -103,7 +132,6 @@ class App extends React.Component {
 
   handleChange(e) {
     const el = $('#image-input');
-    console.log(el[0]);
     const file = URL.createObjectURL(e.target.files[0]);
     this.setState({...this.state, file: file})
     searchImage(el[0])

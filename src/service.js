@@ -97,7 +97,6 @@ function searchImage(image) {
         })
         .then(data => {
           data['hotspots'] = hotspots;
-          console.log(data);
           resolve(data);
         });
     }, function(err){
