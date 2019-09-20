@@ -110,7 +110,8 @@ function Product(props) {
           position: "absolute",
           right: 0,
           padding: "3px",
-          width: "24px"
+          width: "24px",
+          zIndex: 9999
         }}
       />
       <Image src={data.image_url} wrapped ui={false} />
