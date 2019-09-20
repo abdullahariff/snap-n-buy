@@ -80,3 +80,7 @@ label[for='image-input'] {
   padding: 0;
   margin-top: 10px;
 }
+
+.ui.card>.image, .ui.cards>.card>.image {
+  background: none;
+}
