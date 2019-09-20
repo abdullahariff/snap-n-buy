@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import { Input, Icon, Button, Card, Image } from 'semantic-ui-react';
-import * as _ from 'lodash';
+import _ from 'lodash';
+import $ from 'jquery';
 import searchImage from './service'
 
 
@@ -101,9 +102,11 @@ class App extends React.Component {
   }
 
   handleChange(e) {
+    const el = $('#image-input');
+    console.log(el[0]);
     const file = URL.createObjectURL(e.target.files[0]);
     this.setState({...this.state, file: file})
-    searchImage(file)
+    searchImage(el[0])
       .then(result => {
         this.setState({...this.state, data: result});
       })

@@ -72,8 +72,7 @@ function extractProductData(productData) {
 function searchImage(image) {
   return new Promise(function(resolve, reject) {
     uploadsearch({
-        im_url: "https://cdn-images.article.com/products/SKU2128/2890x1500/image46788.jpg?fit=max&w=2600&q=60&fm=webp",
-        // fl: ["im_url","price"]
+      image: image,
     }, function(res) {
       let SKUs = extractSKUs(res.result);
       getElastiInformation(SKUs)
