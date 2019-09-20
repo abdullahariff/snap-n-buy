@@ -54,13 +54,17 @@ function Hotspot(props) {
 
 function Tags(props) {
   const tag = props.tag;
+  function onChange(e) {
+      const tag = e.target.value;
+      props.updateState({...props.appState, filterTag: tag});
+  }
   return (
     <div className="tags">
       {props.labels
           .filter(t => t === tag)
           .map((value, index) => {
         return (
-          <Button key={index} size='large'>
+          <Button key={index} size='large' onClick={onChange}>
             {value}
           </Button>
         )
@@ -86,7 +90,7 @@ function Result(props) {
       <ImagePreview url={props.image_url} hotspots={hotspots}/>
       <hr />
       {tags &&
-        <Tags labels={tags} tag={props.tagFilter} />
+        <Tags labels={tags} tag={props.tagFilter} appState={props.appState} updateState={props.updateState}/>
       }
       {props.data && props.data.hasOwnProperty('matches') &&
         <ProductResults products={props.data.matches} tag={props.tagFilter}/>
@@ -183,7 +187,7 @@ class App extends React.Component {
         {!this.state.file ? (
           <Home />
         ) : (
-          <Result data={data} image_url={this.state.file} tagFilter={this.state.tagFilter}/>
+          <Result data={data} image_url={this.state.file} tagFilter={this.state.tagFilter} appState={this.state} updateState={this.setState}/>
         )}
       </div>
     );
