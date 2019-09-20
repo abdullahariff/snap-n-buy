@@ -21,7 +21,7 @@ function Home () {
 function ImagePreview(props) {
   return (
     <div className='image-output-wrapper'>
-      <img 
+      <img
         src={props.url}
         alt="The capture will appear in this box."
         id='image-output'
@@ -53,9 +53,12 @@ function Hotspot(props) {
 }
 
 function Tags(props) {
+  const tag = props.tag;
   return (
     <div className="tags">
-      {props.labels.map((value, index) => {
+      {props.labels
+          .filter(t => t === tag)
+          .map((value, index) => {
         return (
           <Button key={index} size='large'>
             {value}
@@ -83,10 +86,10 @@ function Result(props) {
       <ImagePreview url={props.image_url} hotspots={hotspots}/>
       <hr />
       {tags &&
-        <Tags labels={tags} />
+        <Tags labels={tags} tag={props.tagFilter} />
       }
       {props.data && props.data.hasOwnProperty('matches') &&
-        <ProductResults products={props.data.matches}/>
+        <ProductResults products={props.data.matches} tag={props.tagFilter}/>
       }
     </div>
   )
@@ -111,12 +114,15 @@ function Product(props) {
 
 function ProductResults(props) {
   const products = _.orderBy(props.products, ['score'], ['desc'])
+  const tag = props.tag
   return (
     <div className='product-results'>
-      {products.map((value, index) => {
-          return (
-            <Product key={index} data={value} />
-          )
+      {products
+          .filter((product) => product.tags.includes(tag))
+          .map((value, index) => {
+              return (
+                <Product key={index} data={value} />
+              )
         })}
     </div>
   )
@@ -125,7 +131,7 @@ function ProductResults(props) {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {file: null};
+    this.state = {file: null, tagFilter: 'Sofa'};
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -177,7 +183,7 @@ class App extends React.Component {
         {!this.state.file ? (
           <Home />
         ) : (
-          <Result data={data} image_url={this.state.file}/>
+          <Result data={data} image_url={this.state.file} tagFilter={this.state.tagFilter}/>
         )}
       </div>
     );
