@@ -74,7 +74,6 @@ function addArrayElements(tags, array) {
 }
 
 function extractHotspots(items) {
-  console.log(items)
   let hotspots = [];
   for (let item of items) {
     const centreX = ((item.box[2] - item.box[0]) / 2) + item.box[0];
