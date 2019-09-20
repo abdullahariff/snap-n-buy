@@ -52,7 +52,22 @@ function extractProductData(productData) {
 }
 
 function extractTags(productData) {
-  return "";
+  let tags = [];
+  productData.data.products.forEach(function(product){
+    tags.push(product.details.productType.value);
+    tags = addArrayElements(tags, product.details.colour);
+    tags = addArrayElements(tags, product.details.style);
+    tags = addArrayElements(tags, product.details.room);
+    tags = addArrayElements(tags, product.details.mainMaterials);
+  });
+  return [...new Set(tags)];
+}
+
+function addArrayElements(tags, array) {
+  array.forEach(function(element){
+    tags.push(element);
+  });
+  return tags;
 }
 
 function searchImage(image) {
