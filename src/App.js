@@ -151,7 +151,7 @@ class App extends React.Component {
 
         <header>
           <div className='search-bar-wrapper'>
-            <Input 
+            <Input
               action={
                 <label for='image-input'>
                   <Icon name='photo' bordered inverted color='black' size='large' />
