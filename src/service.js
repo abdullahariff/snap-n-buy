@@ -70,15 +70,34 @@ function extractProductData(productData) {
   };
 }
 
+function extractHotspots(data) {
+  let hotspots = [];
+  for (let item of data.product_types) {
+    const centreX = ((item.box[2] - item.box[0]) / 2) + item.box[0];
+    const centreY = ((item.box[3] - item.box[1]) / 2) + item.box[1];
+    hotspots.push({
+      'coords': [centreX, centreY],
+      'type': item.type,
+      'score': item.score,
+    });
+  }
+  return hotspots;
+}
+
 function searchImage(image) {
   return new Promise(function(resolve, reject) {
     uploadsearch({
       image: image,
     }, function(res) {
       let SKUs = extractSKUs(res.result);
+      const hotspots = extractHotspots(res);
       getElastiInformation(SKUs)
         .then(function (parsedBody){
-          const data = extractProductData(parsedBody);
+          return extractProductData(parsedBody);
+        })
+        .then(data => {
+          data['hotspots'] = hotspots;
+          console.log(data);
           resolve(data);
         });
     }, function(err){
