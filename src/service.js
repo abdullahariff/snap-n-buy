@@ -54,7 +54,7 @@ function extractProductData(productData) {
 function extractTags(productData) {
   let tags = [];
   productData.data.products.forEach(function(product){
-    tags.push(product.details.productType.value);
+    tags.push({name: product.details.productType.value, score: 0})  ;
     tags = addArrayElements(tags, product.details.colour);
     tags = addArrayElements(tags, product.details.style);
     tags = addArrayElements(tags, product.details.room);
@@ -65,7 +65,10 @@ function extractTags(productData) {
 
 function addArrayElements(tags, array) {
   array.forEach(function(element){
-    tags.push(element);
+    tags.push({
+      name: element,
+      score: 0,
+    });
   });
   return tags;
 }
