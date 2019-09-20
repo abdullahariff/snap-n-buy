@@ -146,14 +146,23 @@ class App extends React.Component {
   handleChange(e) {
     const el = $("#image-input");
     const file = URL.createObjectURL(e.target.files[0]);
+    console.log("file ", file);
+
     this.setState({ ...this.state, file: file, modalOpen: false });
     searchImage(el[0]).then(result => {
+      console.log("search");
+
       this.setState({ ...this.state, data: result });
     });
   }
 
   toggleModal() {
+    console.log("toggle");
+
     this.setState({ modalOpen: !this.state.modalOpen });
+    if (this.state.file !== null) {
+      this.setState({ file: null, image_url: null, data: null });
+    }
   }
 
   render() {
