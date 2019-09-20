@@ -20,7 +20,7 @@ function Home () {
 
 function ImagePreview(props) {
   return (
-    <img 
+    <img
       src={props.url}
       alt="The capture will appear in this box."
       id='image-output'
@@ -103,7 +103,6 @@ class App extends React.Component {
 
   handleChange(e) {
     const el = $('#image-input');
-    console.log(el[0]);
     const file = URL.createObjectURL(e.target.files[0]);
     this.setState({...this.state, file: file})
     searchImage(el[0])
@@ -123,7 +122,7 @@ class App extends React.Component {
 
         <header>
           <div className='search-bar-wrapper'>
-            <Input 
+            <Input
               action={
                 <label for='image-input'>
                   <Icon name='photo' bordered inverted color='black' size='large' />

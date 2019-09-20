@@ -1,34 +1,17 @@
 
-import { set, uploadsearch } from 'visearch-javascript-sdk';
+import { set, discoversearch } from 'visearch-javascript-sdk';
 import * as rp from 'request-promise';
 
 set('app_key', '890640f4b381cbcb3b5cafb0b179c097');
 
-/* Test for individual image with Visense API. */
-// router.get('/image-search', function(req, response, next) {
-// //   visearch.uploadsearch({
-// //     im_url: "https://cdn-images.article.com/products/SKU2128/2890x1500/image46788.jpg?fit=max&w=2600&q=60&fm=webp",
-// //   }, function(res) {
-// //       /* Collect related SKUs from Visenze API call. */
-// //       let SKUs = extractSKUs(res.result);
-// //
-// //       /* Get product information from ElastiGraph. */
-// //       getElastiInformation(SKUs)
-// //           .then(function (parsedBody){
-// //             response.send(extractProductData(parsedBody));
-// //           });
-// //
-// //   }, function(err){
-// //       response.send("GET error")
-// //   });
-// // });
-
 function extractSKUs(list) {
   let SKUs = [];
-  list.forEach(function(item){
-    SKUs.push(item.im_name);
+  list.forEach(function(match){
+    match.result.forEach(function(item){
+      SKUs.push(item.im_name);
+    });
   });
-  return SKUs;
+  return [...new Set(SKUs)];
 }
 
 function getElastiInformation(SKUs) {
@@ -65,20 +48,27 @@ function extractProductData(productData) {
       type: product.details.productType.value
     });
   });
-  return {
-    matches: matches
-  };
+  return matches;
+}
+
+function extractTags(productData) {
+  return "";
 }
 
 function searchImage(image) {
   return new Promise(function(resolve, reject) {
-    uploadsearch({
+    discoversearch({
       image: image,
     }, function(res) {
-      let SKUs = extractSKUs(res.result);
+      let SKUs = extractSKUs(res.objects);
       getElastiInformation(SKUs)
         .then(function (parsedBody){
-          const data = extractProductData(parsedBody);
+          let matches = extractProductData(parsedBody);
+          let tags = extractTags(parsedBody);
+          let data = {
+            matches: matches,
+            tags: tags,
+          };
           resolve(data);
         });
     }, function(err){
